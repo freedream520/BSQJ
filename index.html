@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demo</title>
+    <link rel="stylesheet" type="text/css" href="jcss/bootstrap32.css">
+    <link rel="stylesheet" type="text/css" href="jcss/bootstrap-theme32.css">
+    <script type="text/javascript" src="jcss/jquery191.js"></script>
+    <script type="text/javascript" src="jcss/bootstrap32.js"></script>
+    <script type="text/javascript" src="BSJQ.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        /*pager demo*/
+        BSJQ.InitBootPager({
+            pagerdiv: $("#pagerdiv"),
+            json_url: "#",
+            totalRecords: "123",
+            pageSize: 10,
+            datafields: ['name', 'ip'],
+            extracolumns: ['<a href="javascript:void(0)" onclick="delIP(this)" class="delip" style="cursor:pointer"><span class="glyphicon glyphicon-floppy-remove"></span></a> <a style="cursor:pointer;display:inline-block;margin-left:15px;"><span class="glyphicon glyphicon-edit"></span></a>']
+        });
+
+        /*alert demo*/
+        $("#alertDemo1").click(function() {
+            BSJQ.alert("111111111.");
+        });
+        $("#alertDemo2").click(function() {
+            BSJQ.alert("222222222.", "Warning");
+        });
+        $("#alertDemo3").click(function() {
+            BSJQ.alert("333333333.", "Hello world", function() {
+                console.log('123');
+            });
+        });
+
+    });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- pager demo -->
+                <h3>Pager Demo</h3>
+                <div id="pagerdiv">
+                    <table class="table table-bordered table-hover table-striped">
+                        <tr>
+                            <th width="20%">Name</th>
+                            <th width="20%">IP</th>
+                            <th width="20%">Action</th>
+                        </tr>
+                    </table>
+                    <div id="pagerbar" style="margin-top:-20px;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- alert demo -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Alert Demo</h3>
+                <button id="alertDemo1">Show Alert 1</button>
+                <button id="alertDemo2">Show Alert 2</button>
+                <button id="alertDemo3">Show Alert 3</button>
+            </div>
+            <div class="modal fade" id="bsjq_alert">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">this is message body. </div>
+                        <div class="modal-body">
+                            <p>Hello world</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="bsjq_alert_ok" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
