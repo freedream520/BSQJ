@@ -36,6 +36,22 @@ BootStrap table pageing
         </tbody>
     </table>
 
+##后端代码 - Python
+
+    def ip_json(request):
+        #需要参数pagesize 和 currentpage
+        pagesize = int(request.GET.get('pagesize', 10))
+        startindex = (int(request.GET.get('currentpage', 1)) - 1) * pagesize
+        startindex = 0 if startindex < 0 else startindex
+        endindex = startindex + pagesize
+        totalRecords = EmployeeIP.objects.all().select_related().count()
+        employeeips = EmployeeIP.objects.all().select_related()[startindex:endindex]
+        data = [{"rownum": index + 1, "name": eip.employee.first_name + ' ' + eip.employee.last_name, "ip": eip.IP} for index, eip in enumerate(employeeips)]
+        json_result = {
+            "totalrecords": totalRecords,
+            "data": data
+        }
+        return JsonResponse(json_result, safe=False)
 
 
 
