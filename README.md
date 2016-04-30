@@ -3,14 +3,14 @@ BootStrap table pageing
 
 只需要很少的代码就能实现自动填充和分页
 
-初始化表格和分页
+##初始化表格和分页
 
     $("#iplisttable").pagingTable({
         json_url: "{% url 'attendence:ip_json'%}",
         pageSize: 2
     });
 
-#html结构范例:
+##html结构范例:
 
     <table id="iplisttable" class="table table-bordered table-hover table-striped">
         <thead>
