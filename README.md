@@ -9,6 +9,7 @@ $("#iplisttable").pagingTable({
     pageSize: 2,
     separator: "#" /*V2.1+*/
 });
+
 <hr>
 #version 2.1 changes:
 1.支持模板语法，指定分隔符，默认为 #
