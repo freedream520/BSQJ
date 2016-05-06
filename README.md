@@ -13,9 +13,9 @@ BootStrap table pageing
 ```
 <hr>
 #version 2.1 changes:
-1.支持模板语法，指定分隔符，默认为 #
-<br>
-2.调整html结构，更符合一般的table结构
+1. 支持模板语法，指定分隔符，默认为 #
+
+2. 调整html结构，更符合一般的table结构
 
 #html结构范例:
 ```html
