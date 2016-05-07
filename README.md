@@ -2,6 +2,7 @@
 BootStrap table pageing
 
 #只需要很少的代码就能实现自动填充和分页
+![](https://github.com/wancy86/BSQJ/blob/master/pager.png)
 
 #初始化表格和分页
 ```javascript
@@ -64,32 +65,33 @@ def ip_json(request):
     return JsonResponse(json_result, safe=False)
 ```
 <hr>
-#version 2.0
-#html结构范例:
-```html
-    <table id="iplisttable" class="table table-bordered table-hover table-striped">
-        <thead>
-            <tr>
-                <th width="20%">Name</th>
-                <th width="20%">IP</th>
-                <th width="20%">Action</th>
-            </tr>
-            <tr pk-field="ip" template style="display: none">
-                <td data-field="name">Name</td>
-                <td data-field="ip">IP</td>
-                <td>
-                    <a href="javascript:void(0)" onclick="delIP(this)" class="delip" style="cursor:pointer">
-                        <span class="glyphicon glyphicon-floppy-remove"></span>
-                    </a>
-                    <a style="cursor:pointer;display:inline-block;margin-left:15px;">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-```
+>
+    #version 2.0
+    #html结构范例:
+    ```html
+        <table id="iplisttable" class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th width="20%">Name</th>
+                    <th width="20%">IP</th>
+                    <th width="20%">Action</th>
+                </tr>
+                <tr pk-field="ip" template style="display: none">
+                    <td data-field="name">Name</td>
+                    <td data-field="ip">IP</td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="delIP(this)" class="delip" style="cursor:pointer">
+                            <span class="glyphicon glyphicon-floppy-remove"></span>
+                        </a>
+                        <a style="cursor:pointer;display:inline-block;margin-left:15px;">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    ```
 
 
