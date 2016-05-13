@@ -1,7 +1,7 @@
 /*
  *Name: BootStrap Pager 
  *Author: CooMark
- *version: 2.0
+ *version: 2.1.2
  *BootStrap version: 3.0
  */
 (function($) {
@@ -9,7 +9,9 @@
         var table = $(this);
         var settings = $.extend({
             json_url: null,
-            pageSize: 10
+            pageSize: 10,
+            separator: "#",
+            callback: null
         }, options);
 
         if (!table.is("table")) {
@@ -19,7 +21,9 @@
         table.data({
             pagesize: settings.pageSize,
             currentpage: 1,
-            dataurl: settings.json_url
+            dataurl: settings.json_url,
+            totalrecords: 0,
+            callback: settings.callback
         });
 
         var load_json = function(currentpage) {
@@ -33,33 +37,34 @@
                         table.data('totalrecords', resp.totalrecords);
                         var data = resp.data;
                         table.data('totalpages', Math.ceil(resp.totalrecords / settings.pageSize));
-                        table.find('tbody tr').remove();
+                        table.find('tbody tr[template!=1]').remove();
 
                         //re-generate the paging bar
-                        var template = table.find("thead tr[template]");
-                        var pk_field = template.attr('pk-field');
+                        var template = table.find("tbody tr[template=1]");
                         var tds = template.find('td');
 
                         var datarow = (template.clone())
                             .removeAttr('template')
-                            .removeAttr('pk-field')
                             .removeAttr('style');
 
+                        var template_str = $("<div></div>").append(datarow).html();
+
                         for (var dr = 0; dr < data.length; dr++) {
-                            var newrow = datarow.clone()
-                            for (var c = 0; c < tds.length; c++) {
-                                var datafield = template.find('td').eq(c).attr('data-field');
-                                if (datafield) {
-                                    newrow.find('td').eq(c).html(data[dr][datafield]);
-                                }
-                            }
-                            if (pk_field) {
-                                newrow.attr('pk', data[dr][pk_field]);
+                            var newrow = template_str;
+                            for (var field in data[dr]) {
+                                var reg = new RegExp(settings.separator + field + settings.separator, 'ig');
+                                newrow = newrow.replace(reg, data[dr][field]);
                             }
                             table.find('tbody').append(newrow);
                         }
+
                         if (re_pagebar) {
                             getPageBar(currentpage);
+                        }
+
+                        if(settings.callback && typeof(settings.callback)=='function')
+                        {
+                            settings.callback();
                         }
                     } //end success
             });
@@ -99,6 +104,8 @@
             pagerbar.find('li').on("click", function() {
                 page_click(this);
             });
+
+            page_click(pagerbar.find('li').eq(2));
 
         };
 
