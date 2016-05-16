@@ -59,20 +59,19 @@
                         }
 
                         if (re_pagebar) {
-                            getPageBar(currentpage);
+                            getPageBar();
                         }
 
-                        if(settings.callback && typeof(settings.callback)=='function')
-                        {
+                        if (settings.callback && typeof(settings.callback) == 'function') {
                             settings.callback();
                         }
                     } //end success
             });
-        }
+        };
+
         load_json(1);
 
-        var getPageBar = function(currentpage) {
-            var currentpage = currentpage || 1;
+        var getPageBar = function() {
             totalpages = table.data('totalpages');
             var tmp = '';
             tmp += "<nav>";
@@ -115,7 +114,8 @@
             }
 
             var pagerbar = $(obj).parents('ul');
-            var page_index = table.data('currentpage');
+            var currentpage = table.data('currentpage');
+            var page_index = currentpage;
 
             if ($(obj).hasClass('previous')) {
                 page_index = page_index - 1;
@@ -140,13 +140,19 @@
                 pagerbar.find('li.next, li.last').addClass('disabled');
             }
 
+            if (table.data('totalpages') == 1) {
+                pagerbar.find('li.previous, li.first').addClass('disabled');
+                pagerbar.find('li.next, li.last').addClass('disabled');
+            }
+
             page_index = parseInt(page_index);
             table.data('currentpage', page_index);
             pagerbar.find('li').eq(page_index + 1).addClass('active');
 
-            load_json(page_index);
+            if (page_index != currentpage) {
+                load_json(page_index);
+            }
         };
-
 
         return this;
     };
