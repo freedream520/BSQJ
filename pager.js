@@ -1,7 +1,7 @@
 /*
  *Name: BootStrap Pager 
  *Author: CooMark
- *version: 2.1.2
+ *version: 2.1.3
  *BootStrap version: 3.0
  */
 (function($) {
@@ -10,6 +10,7 @@
         var settings = $.extend({
             json_url: null,
             pageSize: 10,
+            pageNumber: 10,
             separator: "#",
             callback: null
         }, options);
@@ -23,7 +24,8 @@
             currentpage: 1,
             dataurl: settings.json_url,
             totalrecords: 0,
-            callback: settings.callback
+            callback: settings.callback,
+            pageNumber: settings.pageNumber
         });
 
         var load_json = function(currentpage) {
@@ -59,7 +61,7 @@
                         }
 
                         if (re_pagebar) {
-                            getPageBar();
+                            getPageBar(1);
                         }
 
                         if (settings.callback && typeof(settings.callback) == 'function') {
@@ -71,19 +73,23 @@
 
         load_json(1);
 
-        var getPageBar = function() {
-            totalpages = table.data('totalpages');
+        var getPageBar = function(startPage, activePage) {
+            var totalpages = table.data('totalpages');
+            var activePage = activePage || (startPage || 1);
+            var startPage = startPage || 1;
+            var endPage = startPage + settings.pageNumber - 1;
+            endPage = endPage > totalpages ? totalpages : endPage;
+
             var tmp = '';
             tmp += "<nav>";
             tmp += "    <ul class='pagination'>";
             tmp += "        <li class='disabled first'><a href='#' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
             tmp += "        <li class='disabled previous'><a href='#' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
-            tmp += "        <li class='active'><a href='#'>1</a></li>";
 
             var header = tmp;
             var pagers = "";
 
-            for (i = 2; i <= totalpages; i++) {
+            for (i = startPage; i <= endPage; i++) {
                 pagers = pagers + "<li><a href='#'>" + i + "</a></li>";
             }
 
@@ -104,7 +110,11 @@
                 page_click(this);
             });
 
-            page_click(pagerbar.find('li').eq(2));
+            pagerbar.find('li:gt(1):lt(11)').each(function() {
+                if ($(this).text() == activePage) {
+                    page_click(this);
+                }
+            });
 
         };
 
@@ -114,34 +124,37 @@
             }
 
             var pagerbar = $(obj).parents('ul');
+            var totalpages = table.data('totalpages');
+            var pageNumber = table.data('pageNumber');
+            var startPage = parseInt(pagerbar.find("li:eq(2) a").text());
+            var endPage = startPage + pageNumber - 1;
+            endPage = endPage > totalpages ? totalpages : endPage;
+
             var currentpage = table.data('currentpage');
             var page_index = currentpage;
 
             if ($(obj).hasClass('previous')) {
-                page_index = page_index - 1;
+                getPageBar(startPage - pageNumber);
+                return;
             } else if ($(obj).hasClass('next')) {
-                page_index = page_index + 1;
+                getPageBar(startPage + pageNumber);
+                return;
             } else if ($(obj).hasClass('first')) {
-                page_index = 1;
+                getPageBar(1);
+                return;
             } else if ($(obj).hasClass('last')) {
-                page_index = table.data('totalpages');
+                getPageBar(totalpages - totalpages % table.data('pageNumber') + 1, totalpages);
+                return;
             } else {
-                page_index = $(obj).find('a').html();
+                page_index = $(obj).find('a').text();
             }
 
             pagerbar.find('li').removeClass('disabled').removeClass('active');
 
-            if (page_index <= 1) {
-                page_index = 1;
+            if (startPage <= 1 || totalpages <= pageNumber) {
                 pagerbar.find('li.previous, li.first').addClass('disabled');
             }
-            if (page_index >= table.data('totalpages')) {
-                page_index = table.data('totalpages');
-                pagerbar.find('li.next, li.last').addClass('disabled');
-            }
-
-            if (table.data('totalpages') == 1) {
-                pagerbar.find('li.previous, li.first').addClass('disabled');
+            if (endPage >= totalpages || totalpages <= pageNumber) {
                 pagerbar.find('li.next, li.last').addClass('disabled');
             }
 

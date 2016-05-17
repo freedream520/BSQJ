@@ -9,7 +9,8 @@ BootStrap table paging
     $("#iplisttable").pagingTable({
         json_url: "{% url 'attendence:ip_json'%}",
         pageSize: 2,
-        separator: "#" /*default #*/，
+        pageNumber: 10, /*default 10*/
+        separator: "#" /*default #*/,
         callback: function(){console.log('this is callback...');}
     });
 ```
@@ -20,6 +21,8 @@ BootStrap table paging
 2. 调整html结构，更符合一般的table结构
 
 3. 支持回调，在加载数据之后可以添加逻辑
+
+4. 支持自定义显示页码的个数，默认10个
 
 #html结构范例:
 ```html
