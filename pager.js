@@ -110,8 +110,8 @@
                 page_click(this);
             });
 
-            pagerbar.find('li:gt(1):lt(11)').each(function() {
-                if ($(this).text() == activePage) {
+            pagerbar.find('li').each(function() {
+                if ($(this).find('a:eq(0)').text() == activePage) {
                     page_click(this);
                 }
             });
@@ -160,7 +160,11 @@
 
             page_index = parseInt(page_index);
             table.data('currentpage', page_index);
-            pagerbar.find('li').eq(page_index + 1).addClass('active');
+            pagerbar.find('li').each(function() {
+                if ($(this).find('a:eq(0)').text() == page_index) {
+                    $(this).addClass('active');
+                }
+            });
 
             if (page_index != currentpage) {
                 load_json(page_index);
