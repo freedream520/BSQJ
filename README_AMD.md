@@ -1,5 +1,5 @@
 # pager.js AMD for requirejs
-BootStrap table paging 
+自动生成分页，自动加载table
 
 #只需要很少的代码就能实现自动填充和分页
 ![](https://github.com/wancy86/BSQJ/blob/master/pager.png)
@@ -35,7 +35,7 @@ requirejs(['pager'], function(Pager) {
 
 4. 支持自定义显示页码的个数，默认10个
 
-5. AMD difine改写支持requirejs
+5. AMD define改写支持requirejs
 
 #html结构范例:
 ```html

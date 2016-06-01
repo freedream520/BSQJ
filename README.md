@@ -1,5 +1,5 @@
-# BSQJ
-BootStrap table paging
+# pager.js jQuery plugin
+自动生成分页，自动加载table
 
 #只需要很少的代码就能实现自动填充和分页
 ![](https://github.com/wancy86/BSQJ/blob/master/pager.png)
