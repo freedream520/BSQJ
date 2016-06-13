@@ -83,19 +83,19 @@
             var tmp = '';
             tmp += "<nav>";
             tmp += "    <ul class='pagination'>";
-            tmp += "        <li class='disabled first'><a href='#' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
-            tmp += "        <li class='disabled previous'><a href='#' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
+            tmp += "        <li title='First Page' class='disabled first'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
+            tmp += "        <li title='Previous "+table.data('pageNumber')+" Pages' class='disabled previous'><a href='javascript:void(0)' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
 
             var header = tmp;
             var pagers = "";
 
             for (i = startPage; i <= endPage; i++) {
-                pagers = pagers + "<li><a href='#'>" + i + "</a></li>";
+                pagers = pagers + "<li><a href='javascript:void(0)'>" + i + "</a></li>";
             }
 
             tmp = ''
-            tmp += "        <li class='next'><a href='#' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
-            tmp += "        <li class='last'><a href='#' aria-label='First'><span class='glyphicon glyphicon-step-forward'></span></a></li>";
+            tmp += "        <li title='Next "+table.data('pageNumber')+" Pages' class='next'><a href='javascript:void(0)' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
+            tmp += "        <li title='Last Page' class='last'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-forward'></span></a></li>";
             tmp += "    </ul>";
             tmp += "</nav>";
             var footer = tmp;
