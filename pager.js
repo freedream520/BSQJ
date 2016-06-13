@@ -25,7 +25,8 @@
             dataurl: settings.json_url,
             totalrecords: 0,
             callback: settings.callback,
-            pageNumber: settings.pageNumber
+            pageNumber: settings.pageNumber,
+            pagebar: 'pagerbar_' + table.attr("id")
         });
 
         var load_json = function(currentpage) {
@@ -67,6 +68,9 @@
                         if (settings.callback && typeof(settings.callback) == 'function') {
                             settings.callback();
                         }
+
+                        $("#" + table.data('pagebar')).find('li.total span').text(currentpage + ' / ' + table.data('totalpages'));
+                        
                     } //end success
             });
         };
@@ -84,7 +88,7 @@
             tmp += "<nav>";
             tmp += "    <ul class='pagination'>";
             tmp += "        <li title='First Page' class='disabled first'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
-            tmp += "        <li title='Previous "+table.data('pageNumber')+" Pages' class='disabled previous'><a href='javascript:void(0)' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
+            tmp += "        <li title='Previous " + table.data('pageNumber') + " Pages' class='disabled previous'><a href='javascript:void(0)' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
 
             var header = tmp;
             var pagers = "";
@@ -94,16 +98,16 @@
             }
 
             tmp = ''
-            tmp += "        <li title='Next "+table.data('pageNumber')+" Pages' class='next'><a href='javascript:void(0)' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
+            tmp += "        <li title='Next " + table.data('pageNumber') + " Pages' class='next'><a href='javascript:void(0)' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
             tmp += "        <li title='Last Page' class='last'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-forward'></span></a></li>";
+            tmp += "        <li class='total'><span></span></li>";
+
             tmp += "    </ul>";
             tmp += "</nav>";
             var footer = tmp;
 
-            var barName = 'pagerbar_' + table.attr("id");
-            $("#" + barName).remove();
-
-            var pagerbar = $("<div></div>").attr("id", barName);
+            $("#" + table.data('pagebar')).remove();
+            var pagerbar = $("<div></div>").attr("id", table.data('pagebar'));
             pagerbar.html(header + pagers + footer).insertAfter(table);
 
             pagerbar.find('li').on("click", function() {
@@ -143,7 +147,7 @@
                 getPageBar(1);
                 return;
             } else if ($(obj).hasClass('last')) {
-                getPageBar(totalpages - totalpages % table.data('pageNumber') + 1, totalpages);
+                getPageBar(totalpages - table.data('pageNumber') + 1, totalpages);
                 return;
             } else {
                 page_index = $(obj).find('a').text();
