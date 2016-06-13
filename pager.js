@@ -61,6 +61,15 @@
                             table.find('tbody').append(newrow);
                         }
 
+                        //keep pagebar position fixed
+                        if (data.length < table.data('pagesize')) {
+                            var i = parseInt(table.data('pagesize')) - data.length;
+                            for (; i > 0; i--) {
+                                var newrow = $(template_str).clone().css('visibility', 'hidden');
+                                table.find('tbody').append(newrow);
+                            }
+                        }
+
                         if (re_pagebar) {
                             getPageBar(1);
                         }
@@ -70,7 +79,7 @@
                         }
 
                         $("#" + table.data('pagebar')).find('li.total span').text(currentpage + ' / ' + table.data('totalpages'));
-                        
+
                     } //end success
             });
         };
@@ -79,6 +88,9 @@
 
         var getPageBar = function(startPage, activePage) {
             var totalpages = table.data('totalpages');
+            if (totalpages == 1) {
+                return;
+            }
             var activePage = activePage || (startPage || 1);
             var startPage = startPage || 1;
             var endPage = startPage + settings.pageNumber - 1;
@@ -87,9 +99,10 @@
             var tmp = '';
             tmp += "<nav>";
             tmp += "    <ul class='pagination'>";
-            tmp += "        <li title='First Page' class='disabled first'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
-            tmp += "        <li title='Previous " + table.data('pageNumber') + " Pages' class='disabled previous'><a href='javascript:void(0)' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
-
+            if (totalpages > table.data('pageNumber')) {
+                tmp += "        <li title='First Page' class='disabled first'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-backward'></span></a></li>";
+                tmp += "        <li title='Previous " + table.data('pageNumber') + " Pages' class='disabled previous'><a href='javascript:void(0)' aria-label='Next'><span class='glyphicon glyphicon-chevron-left'></span></a></li>";
+            }
             var header = tmp;
             var pagers = "";
 
@@ -98,9 +111,11 @@
             }
 
             tmp = ''
-            tmp += "        <li title='Next " + table.data('pageNumber') + " Pages' class='next'><a href='javascript:void(0)' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
-            tmp += "        <li title='Last Page' class='last'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-forward'></span></a></li>";
-            tmp += "        <li class='total'><span></span></li>";
+            if (totalpages > table.data('pageNumber')) {
+                tmp += "        <li title='Next " + table.data('pageNumber') + " Pages' class='next'><a href='javascript:void(0)' aria-label='Previous'><span class='glyphicon glyphicon-chevron-right'></span></a></li>";
+                tmp += "        <li title='Last Page' class='last'><a href='javascript:void(0)' aria-label='First'><span class='glyphicon glyphicon-step-forward'></span></a></li>";
+                tmp += "        <li class='total'><span></span></li>";
+            }
 
             tmp += "    </ul>";
             tmp += "</nav>";
